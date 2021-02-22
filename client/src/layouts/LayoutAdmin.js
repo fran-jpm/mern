@@ -1,22 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import "./LayoutAdmin.scss";
+import MenuTop from "../components/Admin/MenuTop";
+import MenuSider from "../components/Admin/MenuSider";
 
 export default function LayoutAdmin(props) {
   const { Header, Content, Footer } = Layout;
   // eslint-disable-next-line react/prop-types
   const { routes } = props;
-
+  const [menuCollapsed, setMenuCollapsed] = useState(true);
   return (
     <Layout>
-      <h2>Menu Sider Admin</h2>
-      <Layout>
-        <Header>Header...</Header>
-        <Content>
+      <MenuSider menuCollapsed={menuCollapsed} />
+      <Layout className="layout-admin">
+        <Header className="layout-admin__header">
+          <MenuTop
+            menuCollapsed={menuCollapsed}
+            setMenuCollapsed={setMenuCollapsed}
+          />
+        </Header>
+        <Content className="layout-admin__content">
           <LoadRouters routes={routes} />
         </Content>
-        <Footer>Fran Dev</Footer>
+        <Footer className="layout-admin__footer">Fran Dev</Footer>
       </Layout>
     </Layout>
   );
