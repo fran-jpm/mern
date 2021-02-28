@@ -16,10 +16,10 @@ export default function SignIn() {
         </h1>
         <div className="sign-in__content-tabs">
           <Tabs type="card">
-            <TabPane tab={<span>Entrar</span>} key="1">
+            <TabPane tab={<span>Log In</span>} key="1">
               Componente de LogInForm
             </TabPane>
-            <TabPane tab={<span>Nuevo usuario</span>} key="2">
+            <TabPane tab={<span>Sign In</span>} key="2">
               <RegisterForm />
             </TabPane>
           </Tabs>

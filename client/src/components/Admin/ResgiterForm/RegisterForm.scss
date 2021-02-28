@@ -8,6 +8,16 @@
     &:last-of-type {
       margin: 0;
     }
+
+    .success {
+      border: 1px solid $success;
+      background-color: $background-success !important;
+    }
+
+    .error {
+      border: 1px solid $error;
+      background-color: $background-error !important;
+    }
   }
 
   &__input {
@@ -16,6 +26,17 @@
       i {
         font-size: 0em +22px / $defaultFontSize;
       }
+    }
+    .success {
+      border: 0px solid !important;
+      border-color: none;
+      background-color: $background-success !important;
+    }
+
+    .error {
+      border: 0px solid !important;
+      border-color: none;
+      background-color: $background-error !important;
     }
 
     input {

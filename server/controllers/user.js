@@ -7,7 +7,7 @@ function signUp(req, res) {
   const { email, password, repeatPassword, name, lastname } = req.body;
   user.name = name;
   user.lastname = lastname;
-  user.email = email;
+  user.email = email.toLowerCase();
   user.role = "admin";
   user.active = false;
 
