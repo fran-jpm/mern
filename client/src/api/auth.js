@@ -1,4 +1,4 @@
-import { basePath, apiVersion } from "./config";
+import { BASE_PATH, apiVersion } from "./config";
 import { ACCESS_TOKEN, RESFRESH_TOKEN } from "../utils/constants";
 import jwtDecode from "jwt-decode";
 
@@ -20,6 +20,39 @@ export function getRefreshToken() {
   }
 
   return willExpireToken(refreshToken) ? null : refreshToken;
+}
+
+export async function refreshAccessToken(refreshToken) {
+  const url = `${BASE_PATH}/${apiVersion}/refresh-access-token`;
+  const bodyObj = {
+    refreshToken,
+  };
+
+  const params = {
+    method: "POST",
+    body: JSON.stringify(bodyObj),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const response = await fetch(url, params);
+  if (response.status !== 200) {
+    return null;
+  }
+  const result = await response.json();
+  if (!result) {
+    logout();
+  } else {
+    const { accessToken, refreshAccess } = result;
+    localStorage.setItem(ACCESS_TOKEN, accessToken);
+    localStorage.setItem(RESFRESH_TOKEN, refreshAccess);
+  }
+}
+
+export function logout() {
+  localStorage.removeItem(ACCESS_TOKEN);
+  localStorage.removeItem(RESFRESH_TOKEN);
 }
 
 // Has token expire??

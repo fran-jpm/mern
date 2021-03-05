@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import FranLogo from "../../../assets/img/png/logo.png";
-
+import { logout } from "../../../api/auth";
 import "./MenuTop.scss";
 import { Button } from "antd";
 import {
@@ -13,6 +13,11 @@ import {
 export default function MenuTop(props) {
   // eslint-disable-next-line react/prop-types
   const { menuCollapsed, setMenuCollapsed } = props;
+
+  const logOutUser = () => {
+    logout();
+    window.location.reload();
+  };
 
   return (
     <div className="menu-top">
@@ -28,7 +33,7 @@ export default function MenuTop(props) {
         </Button>
       </div>
       <div className="menu-top__right">
-        <Button type="link">
+        <Button type="link" onClick={logOutUser}>
           <PoweroffOutlined />
         </Button>
       </div>
