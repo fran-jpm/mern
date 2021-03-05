@@ -37,7 +37,7 @@ export default function RegisterForm() {
     if (type === "password") {
       setFormValid({
         ...formValid,
-        [name]: minLengthValidation(e.target, 7),
+        [name]: minLengthValidation(e.target),
       });
     }
 

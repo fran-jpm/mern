@@ -3,6 +3,7 @@ import { Layout, Tabs } from "antd";
 import { Redirect } from "react-router-dom";
 import Logo from "../../../assets/img/png/logo.png";
 import RegisterForm from "../../../components/Admin/ResgiterForm";
+import LogInForm from "../../../components/Admin/LogInForm";
 import "./SignIn.scss";
 
 export default function SignIn() {
@@ -17,7 +18,7 @@ export default function SignIn() {
         <div className="sign-in__content-tabs">
           <Tabs type="card">
             <TabPane tab={<span>Log In</span>} key="1">
-              Componente de LogInForm
+              <LogInForm />
             </TabPane>
             <TabPane tab={<span>Sign In</span>} key="2">
               <RegisterForm />

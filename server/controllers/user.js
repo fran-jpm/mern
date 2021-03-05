@@ -24,8 +24,8 @@ function signUp(req, res) {
         } else {
           user.password = hash;
 
-          user.save((err, userStored) => {
-            if (err) {
+          user.save((error, userStored) => {
+            if (error) {
               res.status(500).send({ message: "User exists" });
             } else {
               if (!userStored) {
@@ -54,8 +54,8 @@ function signIn(req, res) {
       if (!userStored) {
         res.status(404).send({ message: "User doesnt exists" });
       } else {
-        bcrypt.compare(password, userStored.password, (err, check) => {
-          if (err) {
+        bcrypt.compare(password, userStored.password, (error, check) => {
+          if (error) {
             res.status(500).send({ message: "Server error" });
           } else if (!check) {
             res.status(404).send({ message: "Password incorrect" });
