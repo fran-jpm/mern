@@ -64,3 +64,47 @@ export async function signInApi(data) {
     return { ok: false, msg: err.message };
   }
 }
+
+export async function getUsersApi(token) {
+  const url = `${BASE_PATH}/${apiVersion}/users`;
+
+  const params = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await fetch(url, params);
+    const result = await response.json();
+
+    const users = result;
+
+    return users;
+  } catch (err) {
+    return err.message;
+  }
+}
+
+export async function getUsersActiveApi(token, status) {
+  const url = `${BASE_PATH}/${apiVersion}/users-active?active=${status}`;
+
+  const params = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await fetch(url, params);
+    const result = await response.json();
+
+    const users = result;
+
+    return users;
+  } catch (err) {
+    return err.message;
+  }
+}

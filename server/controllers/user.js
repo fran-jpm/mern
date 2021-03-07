@@ -77,7 +77,30 @@ function signIn(req, res) {
   });
 }
 
+function getUsers(req, res) {
+  User.find((err, users) => {
+    if (!users) {
+      res.status(404).send({ message: "Users dont found" });
+    } else {
+      res.status(200).send({ users });
+    }
+  });
+}
+
+function getUsersActive(req, res) {
+  const query = req.query;
+  User.find({ active: query.active }, (err, users) => {
+    if (!users) {
+      res.status(404).send({ message: "Users dont found" });
+    } else {
+      res.status(200).send({ users });
+    }
+  });
+}
+
 module.exports = {
   signUp,
   signIn,
+  getUsers,
+  getUsersActive,
 };

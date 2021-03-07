@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyarser = require("body-parser");
 
 const app = express();
 const { API_VERSION } = require("./config");
@@ -7,10 +6,20 @@ const { API_VERSION } = require("./config");
 //LOAD routings
 const userRoutes = require("./routers/user");
 
-app.use(bodyarser.urlencoded({ extended: false }));
-app.use(bodyarser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Configure Heeader HTTP
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
 
 // Router Basic
 app.use(`/api/${API_VERSION}`, userRoutes);
