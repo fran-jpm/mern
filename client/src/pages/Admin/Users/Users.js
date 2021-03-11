@@ -1,6 +1,8 @@
+/* eslint-disable no-debugger */
 import React, { useState, useEffect } from "react";
 import { getAccessToken } from "../../../api/auth";
 import { getUsersActiveApi } from "../../../api/user";
+import ListUsers from "../../../components/Admin/Users/ListUsers/ListUsers";
 
 import "./Users.scss";
 
@@ -10,18 +12,15 @@ export default function Users() {
 
   const token = getAccessToken();
 
-  console.log(usersActive);
-  console.log(usersInactive);
-
   useEffect(async () => {
     const active = await getUsersActiveApi(token, true);
-    setUsersActive(active);
+    setUsersActive(active.users);
     const inactive = await getUsersActiveApi(token, false);
-    setUsersInactive(inactive);
+    setUsersInactive(inactive.users);
   }, [token]);
   return (
-    <div>
-      <h1>Lista</h1>
+    <div className="users">
+      <ListUsers usersActive={usersActive} usersInactive={usersInactive} />
     </div>
   );
 }
