@@ -1,6 +1,10 @@
 const bcrypt = require("bcrypt-nodejs");
 const User = require("../models/user");
 const jwt = require("../services/jwt");
+const fs = require("fs");
+const path = require("path");
+
+const allowedExtension = ["png", "jpg"];
 
 function signUp(req, res) {
   const user = new User();
@@ -98,9 +102,58 @@ function getUsersActive(req, res) {
   });
 }
 
+function uploadAvatar(req, res) {
+  const params = req.params;
+  User.findById({ _id: params.id }, (err, userData) => {
+    if (err) {
+      res.status(500).send({ message: "Server error" });
+    } else {
+      if (!userData) {
+        res.status(404).send({ message: "User doesnt found" });
+      } else {
+        let user = userData;
+        if (req.files) {
+          // path: 'uploads/avatar/xXX8ZVBS75W7n4xRXuuRNdXf.jpg'
+          let filePath = req.files.avatar.path;
+          let fileSplit = filePath.split("/");
+          let fileName = fileSplit[2];
+
+          let extensionSplit = fileName.split(".");
+          let fileExtension = extensionSplit[1];
+
+          if (!allowedExtension.includes(fileExtension)) {
+            res
+              .status(400)
+              .send({ message: "Extension is not valid (Only PNG and JPG)" });
+          } else {
+            user.avatar = fileName;
+
+            User.findByIdAndUpdate(
+              { _id: params.id },
+              user,
+              (error, userRes) => {
+                if (error) {
+                  res.status(500).send({ message: "Server error" });
+                } else {
+                  if (!userRes) {
+                    res.status(404).send({ message: "User doesnt found" });
+                  } else {
+                    res.status(200).send({ avatarName: fileName });
+                  }
+                }
+              }
+            );
+          }
+        }
+      }
+    }
+  });
+}
+
 module.exports = {
   signUp,
   signIn,
   getUsers,
   getUsersActive,
+  uploadAvatar,
 };
