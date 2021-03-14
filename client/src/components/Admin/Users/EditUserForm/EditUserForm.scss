@@ -8,4 +8,14 @@
     padding: 1rem;
     margin-bottom: 1rem;
   }
+  .form-edit {
+    .ant-form-item {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  }
+  .btn-content {
+    display: grid;
+    justify-content: center;
+  }
 }
