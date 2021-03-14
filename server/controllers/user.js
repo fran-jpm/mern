@@ -150,10 +150,45 @@ function uploadAvatar(req, res) {
   });
 }
 
+function getAvatar(req, res) {
+  const avatarName = req.params.avatarName;
+  const filePath = "./uploads/avatar/" + avatarName;
+
+  fs.stat(filePath, (err, stats) => {
+    if (err) {
+      res.status(500).send({ message: "Server error" });
+    } else {
+      if (!stats) {
+        res.status(404).send({ message: "avatar doesnt exists" });
+      } else {
+        res.sendFile(path.resolve(filePath));
+      }
+    }
+  });
+}
+
+function updateUser(req, res) {
+  const userId = req.params.id;
+  const userDataBody = req.body;
+  User.findByIdAndUpdate({ _id: userId }, userDataBody, (error, userRes) => {
+    if (error) {
+      res.status(500).send({ message: "Server error" });
+    } else {
+      if (!userRes) {
+        res.status(404).send({ message: "User doesnt found" });
+      } else {
+        res.status(200).send({ user: userDataBody });
+      }
+    }
+  });
+}
+
 module.exports = {
   signUp,
   signIn,
   getUsers,
   getUsersActive,
   uploadAvatar,
+  getAvatar,
+  updateUser,
 };

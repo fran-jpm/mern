@@ -19,4 +19,7 @@ api.put(
   UserController.uploadAvatar
 );
 
+api.get("/get-avatar/:avatarName", UserController.getAvatar);
+api.put("/user/:id", [md_auth.ensureAuth], UserController.updateUser);
+
 module.exports = api;
