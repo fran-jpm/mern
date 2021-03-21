@@ -108,3 +108,60 @@ export async function getUsersActiveApi(token, status) {
     return err.message;
   }
 }
+
+export async function uploadAvatarApi(token, avatar, userId) {
+  const url = `${BASE_PATH}/${apiVersion}/upload-avatar/${userId}`;
+  const formData = new FormData();
+  formData.append("avatar", avatar, avatar.name);
+
+  const params = {
+    method: "PUT",
+    body: formData,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await fetch(url, params);
+    const result = await response.json();
+
+    return result;
+  } catch (err) {
+    return err.message;
+  }
+}
+
+export async function getAvatarApi(avatarName) {
+  const url = `${BASE_PATH}/${apiVersion}/get-avatar/${avatarName}`;
+
+  try {
+    const response = await fetch(url);
+    // const result = await response.json();
+
+    return response.url;
+  } catch (err) {
+    return err.message;
+  }
+}
+
+export async function updateUserApi(token, user, userId) {
+  const url = `${BASE_PATH}/${apiVersion}/user/${userId}`;
+
+  const params = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(user),
+  };
+
+  try {
+    const response = await fetch(url, params);
+    const result = await response.json();
+
+    return result;
+  } catch (err) {
+    return err.message;
+  }
+}

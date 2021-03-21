@@ -9,3 +9,7 @@
   border: 1px solid $error;
   background-color: $background-error;
 }
+
+.ant-notification {
+  z-index: 9999;
+}

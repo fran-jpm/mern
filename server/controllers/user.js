@@ -169,7 +169,9 @@ function getAvatar(req, res) {
 
 function updateUser(req, res) {
   const userId = req.params.id;
-  const userDataBody = req.body;
+  let userDataBody = req.body;
+  userDataBody.email = req.body.email.toLowerCase();
+
   User.findByIdAndUpdate({ _id: userId }, userDataBody, (error, userRes) => {
     if (error) {
       res.status(500).send({ message: "Server error" });
