@@ -59,25 +59,25 @@ export default function EditUserForm(props) {
   }, [avatar]);
 
   const updateUser = async () => {
-    console.log(userData);
     const token = getAccessToken();
     let userUpdate = userData;
-
-    if (userUpdate.password || userUpdate.repeatPassword) {
-      if (userUpdate.password !== userUpdate.repeatPassword) {
-        notification["error"]({
-          message: "Passwords must be the same",
-        });
-      }
-
-      return;
-    }
 
     if (!userUpdate.name || !userUpdate.lastname || !userUpdate.email) {
       notification["error"]({
         message: "Name, lastname and email are mandatory",
       });
       return;
+    }
+
+    if (userUpdate.password || userUpdate.repeatPassword) {
+      if (userUpdate.password !== userUpdate.repeatPassword) {
+        notification["error"]({
+          message: "Passwords must be the same",
+        });
+        return;
+      } else {
+        delete userUpdate.repeatPassword;
+      }
     }
 
     if (typeof userUpdate.avatar === "object") {
@@ -241,6 +241,7 @@ function EditForm(props) {
               prefix={<LockOutlined style={{ color: "rgba(0,0,0,0.25)" }} />}
               type="password"
               placeholder="Repeat password"
+              value={userData.repeatPassword}
               onChange={(e) =>
                 setUserData({ ...userData, repeatPassword: e.target.value })
               }

@@ -167,10 +167,20 @@ function getAvatar(req, res) {
   });
 }
 
-function updateUser(req, res) {
+async function updateUser(req, res) {
   const userId = req.params.id;
   let userDataBody = req.body;
   userDataBody.email = req.body.email.toLowerCase();
+
+  if (userDataBody.password) {
+    await bcrypt.hash(userDataBody.password, null, null, (err, hash) => {
+      if (err) {
+        res.status(500).send({ message: "Error crypt password" });
+      } else {
+        userDataBody.password = hash;
+      }
+    });
+  }
 
   User.findByIdAndUpdate({ _id: userId }, userDataBody, (error, userRes) => {
     if (error) {
@@ -185,6 +195,27 @@ function updateUser(req, res) {
   });
 }
 
+function activateUser(req, res) {
+  const { id } = req.params;
+  const { active } = req.body;
+
+  User.findByIdAndUpdate({ _id: id }, { active }, (error, userRes) => {
+    if (error) {
+      res.status(500).send({ message: "Server error" });
+    } else {
+      if (!userRes) {
+        res.status(404).send({ message: "User doesnt exists" });
+      } else {
+        if (active) {
+          res.status(200).send({ message: "User activated" });
+        } else {
+          res.status(200).send({ message: "User desactivated" });
+        }
+      }
+    }
+  });
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -193,4 +224,5 @@ module.exports = {
   uploadAvatar,
   getAvatar,
   updateUser,
+  activateUser,
 };

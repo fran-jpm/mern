@@ -165,3 +165,24 @@ export async function updateUserApi(token, user, userId) {
     return err.message;
   }
 }
+
+export async function activateUserApi(token, userId, active) {
+  const url = `${BASE_PATH}/${apiVersion}/activate-user/${userId}`;
+  const params = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({ active: active }),
+  };
+
+  try {
+    const response = await fetch(url, params);
+    const result = await response.json();
+
+    return result.message;
+  } catch (err) {
+    return err.message;
+  }
+}
