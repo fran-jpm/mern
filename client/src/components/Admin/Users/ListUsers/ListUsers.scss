@@ -1,12 +1,18 @@
 .list-users {
-  &__switch {
+  &__header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 1rem;
-    button {
-      margin-right: 1rem;
+    &-switch {
+      display: flex;
+      align-items: center;
+      button {
+        margin-right: 1rem;
+      }
     }
   }
+
   li {
     padding: 1rem;
   }

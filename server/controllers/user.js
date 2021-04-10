@@ -232,6 +232,41 @@ function deleteUser(req, res) {
   });
 }
 
+function signUpAdmin(req, res) {
+  const user = new User();
+
+  const { name, lastname, email, role, password, active } = req.body;
+  user.name = name;
+  user.lastname = lastname;
+  user.email = email.toLowerCase();
+  user.role = role;
+  user.active = active;
+
+  if (!password) {
+    res.status(500).send({ message: "Password is mandatory" });
+  } else {
+    bcrypt.hash(password, null, null, (err, hash) => {
+      if (err) {
+        res.status(500).send({ message: "Error encript password" });
+      } else {
+        user.password = hash;
+
+        user.save((error, userStored) => {
+          if (error) {
+            res.status(500).send({ message: "User exists" });
+          } else {
+            if (!userStored) {
+              res.status(500).send({ message: "Error to create user" });
+            } else {
+              res.status(200).send({ user: userStored });
+            }
+          }
+        });
+      }
+    });
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -242,4 +277,5 @@ module.exports = {
   updateUser,
   activateUser,
   deleteUser,
+  signUpAdmin,
 };
