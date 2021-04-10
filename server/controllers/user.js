@@ -216,6 +216,22 @@ function activateUser(req, res) {
   });
 }
 
+function deleteUser(req, res) {
+  const { id } = req.params;
+
+  User.findByIdAndDelete({ _id: id }, (error, userRes) => {
+    if (error) {
+      res.status(500).send({ message: "Server error" });
+    } else {
+      if (!userRes) {
+        res.status(404).send({ message: "User doesnt found" });
+      } else {
+        res.status(200).send({ message: "User deleted OK" });
+      }
+    }
+  });
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -225,4 +241,5 @@ module.exports = {
   getAvatar,
   updateUser,
   activateUser,
+  deleteUser,
 };

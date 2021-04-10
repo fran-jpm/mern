@@ -3,7 +3,14 @@
 /* eslint-disable react/prop-types */
 
 import React, { useState, useEffect } from "react";
-import { Switch, List, Avatar, Button, notification } from "antd";
+import {
+  Switch,
+  List,
+  Avatar,
+  Button,
+  Modal as ModalAntd,
+  notification,
+} from "antd";
 import NoAvatar from "../../../../assets/img/png/no-avatar.png";
 import {
   EditOutlined,
@@ -16,8 +23,14 @@ import "./ListUsers.scss";
 import Modal from "../../Modal/Modal";
 import EditUserForm from "../EditUserForm/EditUserForm";
 
-import { getAvatarApi, activateUserApi } from "../../../../api/user";
+import {
+  getAvatarApi,
+  activateUserApi,
+  deleteUserApi,
+} from "../../../../api/user";
 import { getAccessToken } from "../../../../api/auth";
+
+const { confirm } = ModalAntd;
 
 export default function ListUsers(props) {
   const { usersActive, usersInactive, setReloadUsers } = props;
@@ -26,8 +39,25 @@ export default function ListUsers(props) {
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState("");
 
-  const deleteUser = (email) => {
-    console.log(email);
+  const deleteUser = (user) => {
+    const accessToken = getAccessToken();
+
+    confirm({
+      title: "Deleting user...",
+      content: `Are you sure that you want to delete user ${user.email}`,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      async onOk() {
+        try {
+          const res = await deleteUserApi(accessToken, user._id);
+          notification["error"]({ message: res });
+          setReloadUsers(true);
+        } catch (err) {
+          notification["error"]({ message: err });
+        }
+      },
+    });
   };
 
   return (
@@ -45,13 +75,14 @@ export default function ListUsers(props) {
           setIsVisibleModal={setIsVisibleModal}
           setModalTitle={setModalTitle}
           setModalContent={setModalContent}
-          onDeleteButton={deleteUser}
+          deleteUser={deleteUser}
           setReloadUsers={setReloadUsers}
         />
       ) : (
         <UsersInactive
           usersInactive={usersInactive}
           setReloadUsers={setReloadUsers}
+          deleteUser={deleteUser}
         />
       )}
       <Modal
@@ -69,7 +100,7 @@ function UsersActive(props) {
   const {
     usersActive,
     setIsVisibleModal,
-    onDeleteButton,
+    deleteUser,
     setModalContent,
     setModalTitle,
     setReloadUsers,
@@ -97,6 +128,7 @@ function UsersActive(props) {
           user={user}
           editUser={editUser}
           setReloadUsers={setReloadUsers}
+          deleteUser={deleteUser}
         />
       )}
     />
@@ -136,7 +168,7 @@ function UserActive(props) {
         <Button type="danger" onClick={() => desactivateUser()}>
           <StopOutlined />
         </Button>,
-        <Button type="danger" onClick={() => console.log("delete")}>
+        <Button type="danger" onClick={() => deleteUser(user)}>
           <DeleteOutlined />
         </Button>,
       ]}
@@ -154,7 +186,7 @@ function UserActive(props) {
 }
 
 function UsersInactive(props) {
-  const { usersInactive, setReloadUsers } = props;
+  const { usersInactive, setReloadUsers, deleteUser } = props;
 
   return (
     <List
@@ -162,14 +194,18 @@ function UsersInactive(props) {
       itemLayout="horizontal"
       dataSource={usersInactive}
       renderItem={(user) => (
-        <UserInactive user={user} setReloadUsers={setReloadUsers} />
+        <UserInactive
+          user={user}
+          setReloadUsers={setReloadUsers}
+          deleteUser={deleteUser}
+        />
       )}
     />
   );
 }
 
 function UserInactive(props) {
-  const { user, setReloadUsers } = props;
+  const { user, setReloadUsers, deleteUser } = props;
 
   const [avatar, setAvatar] = useState(null);
 
@@ -199,7 +235,7 @@ function UserInactive(props) {
         <Button type="primary" onClick={() => activateUser()}>
           <CheckCircleOutlined />
         </Button>,
-        <Button type="danger" onClick={() => console.log("Borrar user")}>
+        <Button type="danger" onClick={() => deleteUser(user)}>
           <DeleteOutlined />
         </Button>,
       ]}

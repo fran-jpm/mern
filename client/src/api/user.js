@@ -186,3 +186,22 @@ export async function activateUserApi(token, userId, active) {
     return err.message;
   }
 }
+
+export async function deleteUserApi(token, userId) {
+  const url = `${BASE_PATH}/${apiVersion}/user/${userId}`;
+  const params = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const res = await fetch(url, params);
+    const result = await res.json();
+
+    return result.message;
+  } catch (err) {
+    return err.message;
+  }
+}
