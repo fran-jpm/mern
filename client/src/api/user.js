@@ -25,20 +25,6 @@ export async function signUpApi(data) {
   } catch (err) {
     return { ok: false, msg: err.message };
   }
-
-  // fetch(url, params)
-  //   .then((response) => {
-  //     return response.json();
-  //   })
-  //   .then((result) => {
-  //     if (result.user) {
-  //       return result;
-  //     }
-  //     return false;
-  //   })
-  //   .catch(() => {
-  //     return false;
-  //   });
 }
 
 export async function signInApi(data) {
@@ -203,5 +189,26 @@ export async function deleteUserApi(token, userId) {
     return result.message;
   } catch (err) {
     return err.message;
+  }
+}
+
+export async function signUpAdminApi(token, data) {
+  const url = `${BASE_PATH}/${apiVersion}/sign-up-admin`;
+  const params = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(data),
+  };
+
+  try {
+    const res = await fetch(url, params);
+    const result = await res.json();
+
+    return result;
+  } catch (e) {
+    return e.message;
   }
 }

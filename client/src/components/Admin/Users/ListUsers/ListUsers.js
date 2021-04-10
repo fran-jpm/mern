@@ -29,6 +29,7 @@ import {
   deleteUserApi,
 } from "../../../../api/user";
 import { getAccessToken } from "../../../../api/auth";
+import AddUserForm from "../AddUserForm";
 
 const { confirm } = ModalAntd;
 
@@ -64,10 +65,10 @@ export default function ListUsers(props) {
     setIsVisibleModal(true);
     setModalTitle("Create new user");
     setModalContent(
-      <div>
-        <h1>Formulario creacion usuario</h1>
-        <h2>New user</h2>
-      </div>
+      <AddUserForm
+        setIsVisibleModal={setIsVisibleModal}
+        setReloadUsers={setReloadUsers}
+      />
     );
   };
 
