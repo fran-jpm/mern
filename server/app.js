@@ -5,6 +5,7 @@ const { API_VERSION } = require("./config");
 
 //LOAD routings
 const userRoutes = require("./routers/user");
+const menuRouter = require("./routers/menu");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -23,5 +24,6 @@ app.use((req, res, next) => {
 
 // Router Basic
 app.use(`/api/${API_VERSION}`, userRoutes);
+app.use(`/api/${API_VERSION}`, menuRouter);
 
 module.exports = app;

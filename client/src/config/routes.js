@@ -5,12 +5,15 @@ import LayoutBasic from "../layouts/LayoutBasic";
 import AdminHome from "../pages/Admin";
 import AdminSignIn from "../pages/Admin/SignIn";
 import AdminUsers from "../pages/Admin/Users";
+import AdminMenuWeb from "../pages/Admin/MenuWeb";
+
 // Pages
 import Home from "../pages/Home";
 import Contact from "../pages/Contact";
 
 // Other
 import Error404 from "../pages/Error404";
+import MenuWeb from "../pages/Admin/MenuWeb";
 
 const routes = [
   {
@@ -31,6 +34,11 @@ const routes = [
       {
         path: "/admin/users",
         component: AdminUsers,
+        exact: true,
+      },
+      {
+        path: "/admin/menu",
+        component: AdminMenuWeb,
         exact: true,
       },
       {
