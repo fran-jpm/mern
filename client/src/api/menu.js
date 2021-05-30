@@ -16,3 +16,23 @@ export async function getMenuApi(token) {
     return err.message;
   }
 }
+
+export async function updateMenuApi(token, menuId, data) {
+  const url = `${BASE_PATH}/${apiVersion}/menu/${menuId}`;
+  const params = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(data),
+  };
+
+  try {
+    const response = await fetch(url, params);
+    const res = await response.json();
+    return res.message;
+  } catch (err) {
+    return err.message;
+  }
+}

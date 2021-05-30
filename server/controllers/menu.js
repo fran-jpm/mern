@@ -38,6 +38,23 @@ function getMenu(req, res) {
   });
 }
 
+function updateMenu(req, res) {
+  let menuData = req.body;
+  const params = req.params;
+
+  Menu.findByIdAndUpdate(params.id, menuData, (err, menuUpdate) => {
+    if (err) {
+      res.status(500).send({ message: "Server error" });
+    } else {
+      if (!menuUpdate) {
+        res.status(404).send({ message: "Menu doesnt found" });
+      } else {
+        res.status(200).send({ message: "Menu update" });
+      }
+    }
+  });
+}
+
 function getMenus(req, res) {
   Menu.find()
     .sort({ order: "asc" })
@@ -58,4 +75,5 @@ module.exports = {
   addMenu,
   getMenu,
   getMenus,
+  updateMenu,
 };
