@@ -13,7 +13,6 @@ import Contact from "../pages/Contact";
 
 // Other
 import Error404 from "../pages/Error404";
-import MenuWeb from "../pages/Admin/MenuWeb";
 
 const routes = [
   {
